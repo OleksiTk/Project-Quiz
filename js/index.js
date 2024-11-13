@@ -95,7 +95,7 @@ const question = [
         result: "false",
       },
       {
-        text: "1905",
+        text: "1906",
         result: "false",
       },
       {
@@ -109,12 +109,95 @@ const question = [
 let textQuestion = document.querySelector(".quiz__question");
 let buttonsAnswer = document.querySelectorAll(".quiz__btn");
 let buttonNext = document.querySelector(".quiz__next-button");
+let quizAnswer = document.querySelector(".quiz__answer");
+let currentQuestion = 0;
+let startButton = document.querySelector(".quiz__start-button");
+let score = 0;
+let container = document.querySelector(".quiz__container");
+let quizResult = document.querySelector(".quiz__result");
+let quizScore = document.querySelector(".quiz__result--score");
+let quizTryAgain = document.querySelector(".quiz__result--f5");
+
+startButton.addEventListener("click", () => {
+  showQuestion(), creatQuestion();
+});
+function showQuestion() {
+  let quizStart = document.querySelector(".quiz__start");
+  container.style.height = "600px";
+  quizStart.style.display = "none";
+  quizAnswer.style.display = "flex";
+}
+
+quizTryAgain.addEventListener("click", () => {
+  location.reload(); // Перезавантажує сторінку
+});
+
+function resultYour() {
+  if (currentQuestion == 5) {
+    quizScore.textContent = score + "/5";
+    quizResult.style.display = "flex";
+    container.style.height = "360px";
+    quizAnswer.style.display = "none";
+  }
+}
+
 function creatQuestion() {
-  let text = (textQuestion.innerHTML = question[0].textQuestion);
+  let text = (textQuestion.innerHTML = question[currentQuestion].textQuestion);
 
   buttonsAnswer.forEach((button, index) => {
-    button.textContent = question[0].answer[index].text;
+    button.textContent = question[currentQuestion].answer[index].text;
+  });
+  clear();
+  buttonsAnswer.forEach((button) => {
+    button.disabled = false; // Вимикаємо всі кнопки
+  });
+  console.log(score);
+}
+
+buttonNext.addEventListener("click", () => {
+  currentQuestion++;
+  if (!(currentQuestion == 5)) {
+    creatQuestion();
+  } else {
+    resultYour();
+  }
+});
+
+buttonsAnswer.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    resultAnswer(button);
+  });
+});
+function resultAnswer(btn) {
+  let textButton = btn.textContent; // Текст на кнопці
+  const currentAnswer = question[currentQuestion].answer.find(
+    (answer) => answer.text === textButton
+  ); // Знайти поточну відповідь
+
+  // Додаємо клас залежно від того, правильна чи неправильна відповідь
+  if (currentAnswer.result === "true") {
+    btn.classList.add("quiz__btn__true");
+    score++;
+  } else {
+    btn.classList.add("quiz__btn__false"); // Для неправильної відповіді
+  }
+
+  // Після того як натиснули на відповідь, потрібно показати правильну відповідь
+  question[currentQuestion].answer.forEach((answer, index) => {
+    // Знайдемо кнопку, яка містить правильну відповідь
+    if (answer.result === "true") {
+      buttonsAnswer[index].classList.add("quiz__btn__true"); // Додамо клас для правильної кнопки
+    }
+  });
+
+  // Забороняємо подальші натискання на кнопки після вибору
+  buttonsAnswer.forEach((button) => {
+    button.disabled = true; // Вимикаємо всі кнопки
   });
 }
 
-buttonNext.addEventListener("click", creatQuestion);
+function clear() {
+  buttonsAnswer.forEach((button) => {
+    button.classList.remove("quiz__btn__true", "quiz__btn__false");
+  });
+}
