@@ -1,0 +1,132 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+img {
+  vertical-align: top;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+html,
+body {
+  background-color: rgb(0, 102, 255);
+  height: 100%;
+  line-height: 1;
+  font-family: Domine;
+}
+textarea,
+button,
+input {
+  font-weight: inherit;
+  font-size: inherit;
+  color: inherit;
+  font-family: inherit;
+}
+button {
+  cursor: pointer;
+  background-color: inherit;
+}
+/*--------------------------------------------------------*/
+.wrapper {
+  padding-top: 200px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper > main {
+  flex-grow: 1;
+}
+
+[class*="__container"] {
+  width: 715px;
+  height: 600px;
+  margin: 0 auto;
+}
+/*--------------------------------------------------------*/
+
+.quiz__container {
+  background-color: aliceblue;
+  border-radius: 20px;
+  position: relative;
+}
+.quiz__logo {
+  z-index: 1;
+  padding: 35px 0px 20px 34px;
+  font-size: 40px;
+}
+.quiz__logo::after {
+  position: absolute;
+  top: 19%;
+  left: 5%;
+  width: 615px;
+  height: 1px;
+  background-color: black;
+  content: "";
+  z-index: 2;
+}
+.quiz__answer {
+  padding-top: 50px;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.quiz__question {
+  font-size: 30px;
+}
+.quiz__button {
+  padding-top: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.quiz__btn {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 18px;
+  border-radius: 5px;
+  width: 610px;
+  padding: 15px 0px 15px 10px;
+  border: 2px solid;
+}
+.quiz__btn__true:hover {
+  background-color: green;
+}
+.quiz__btn__false:hover {
+  background-color: red;
+}
+.quiz__next {
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.quiz__next-button {
+  font-size: 25px;
+  color: aliceblue;
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 10px 70px;
+  background-color: blue;
+}
