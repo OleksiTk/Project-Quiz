@@ -119,9 +119,30 @@ let quizScore = document.querySelector(".quiz__result--score");
 let quizTryAgain = document.querySelector(".quiz__result--f5");
 
 startButton.addEventListener("click", () => {
-  showQuestion(), creatQuestion();
+  loadAnimation(),
+    hiddeContainer(),
+    setTimeout(showQuestion, 2000),
+    setTimeout(creatQuestion, 2000);
 });
+
+function hiddeContainer() {
+  container.style.display = "none";
+  setTimeout(() => {
+    container.style.display = "block";
+  }, 2000);
+}
+
+function buttonShow() {
+  buttonNext.style.display = "block";
+}
+function hiddeButton() {
+  if (buttonNext.style.display == "block") {
+    buttonNext.style.display = "none";
+  }
+}
+
 function showQuestion() {
+  buttonNext.style.display = "none";
   let quizStart = document.querySelector(".quiz__start");
   container.style.height = "600px";
   quizStart.style.display = "none";
@@ -133,12 +154,17 @@ quizTryAgain.addEventListener("click", () => {
 });
 
 function resultYour() {
-  if (currentQuestion == 5) {
-    quizScore.textContent = score + "/5";
-    quizResult.style.display = "flex";
-    container.style.height = "360px";
-    quizAnswer.style.display = "none";
-  }
+  container.style.display = "none";
+  quizAnswer.style.display = "none";
+  loadAnimation();
+  setTimeout(() => {
+    if (currentQuestion == 5) {
+      container.style.display = "block";
+      quizScore.textContent = score + "/5";
+      quizResult.style.display = "flex";
+      container.style.height = "360px";
+    }
+  }, 2000);
 }
 
 function creatQuestion() {
@@ -151,6 +177,7 @@ function creatQuestion() {
   buttonsAnswer.forEach((button) => {
     button.disabled = false; // Вимикаємо всі кнопки
   });
+
   console.log(score);
 }
 
@@ -158,6 +185,7 @@ buttonNext.addEventListener("click", () => {
   currentQuestion++;
   if (!(currentQuestion == 5)) {
     creatQuestion();
+    hiddeButton(); // Ховаємо кнопку "Next"
   } else {
     resultYour();
   }
@@ -166,13 +194,15 @@ buttonNext.addEventListener("click", () => {
 buttonsAnswer.forEach((button, index) => {
   button.addEventListener("click", () => {
     resultAnswer(button);
+    buttonShow();
   });
 });
+
 function resultAnswer(btn) {
   let textButton = btn.textContent; // Текст на кнопці
   const currentAnswer = question[currentQuestion].answer.find(
     (answer) => answer.text === textButton
-  ); // Знайти поточну відповідь
+  ); // Знайдемо поточну відповідь
 
   // Додаємо клас залежно від того, правильна чи неправильна відповідь
   if (currentAnswer.result === "true") {
@@ -194,10 +224,24 @@ function resultAnswer(btn) {
   buttonsAnswer.forEach((button) => {
     button.disabled = true; // Вимикаємо всі кнопки
   });
+  buttonShow();
 }
 
 function clear() {
   buttonsAnswer.forEach((button) => {
     button.classList.remove("quiz__btn__true", "quiz__btn__false");
   });
+}
+
+function loadAnimation() {
+  document.getElementById("loadingAnimation").classList.remove("hidden");
+
+  // Затримка для імітації завантаження (наприклад, 2 секунди)
+  setTimeout(function () {
+    // Приховуємо анімацію
+    document.getElementById("loadingAnimation").classList.add("hidden");
+
+    // Показуємо питання
+    quizAnswer.classList.remove("hidden");
+  }, 2000); // 2000 мс = 2 секунди
 }
